@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { type } from '@testing-library/user-event/dist/type'
 
-export const LoginForm = ({handleOnChange, handleOnSubmit, formSwitcher, email, pass}) => {
+export const ResetPassword = ({handleOnChange, handleOnResetSubmit, formSwitcher, email}) => {
 	return (
 		<Container>
 			<Row>
 				<Col>
-					<h1 className='text-info text-center'>Client Login</h1>
+					<h1 className='text-info text-center'>Reset Password</h1>
 					<hr />
-					<Form autoComplete='off' onSubmit={handleOnSubmit}>
+					<Form autoComplete='off' onSubmit={handleOnResetSubmit}>
 						<Form.Group>
 							<Form.Label>Email Address</Form.Label>
 							<Form.Control
@@ -22,18 +22,8 @@ export const LoginForm = ({handleOnChange, handleOnSubmit, formSwitcher, email, 
 								required
 							/>
 						</Form.Group>
-						<Form.Group>
-							<Form.Label>Password</Form.Label>
-							<Form.Control
-								type='password'
-								name='password'
-								value={pass}
-								onChange ={handleOnChange}
-								placeholder='Password'
-								required
-							/>
-						</Form.Group>
-						<Button variant="primary" type="submit">Login</Button>
+						
+						<Button variant="primary" type="submit">Reset Password</Button>
 					</Form>
 					<hr />
 				</Col>
@@ -41,18 +31,16 @@ export const LoginForm = ({handleOnChange, handleOnSubmit, formSwitcher, email, 
 
 			<Row>
 				<Col>
-				<a href='#!/reset-password' onClick={() => formSwitcher('rest')}>Forget Password?</a>
+				<a href='login#!' onClick={()=>formSwitcher('login')}>Login Now</a>
 				</Col>
 			</Row>
 		</Container>
 	)
 }
 
-LoginForm.propTypes ={
+ResetPassword.propTypes ={
 	handleOnChange: PropTypes.func.isRequired,
-	handleOnSubmit: PropTypes.func.isRequired,
+	handleOnResetSubmit: PropTypes.func.isRequired,
 	formSwitcher: PropTypes.func.isRequired,
 	email: PropTypes.string.isRequired,
-	pass: PropTypes.string.isRequired,
-
 }
