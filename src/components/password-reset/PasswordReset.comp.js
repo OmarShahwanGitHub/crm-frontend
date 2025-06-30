@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import { type } from '@testing-library/user-event/dist/type'
+// import { type } from '@testing-library/user-event/dist/type'
 
 export const ResetPassword = ({handleOnChange, handleOnResetSubmit, formSwitcher, email}) => {
 	return (
