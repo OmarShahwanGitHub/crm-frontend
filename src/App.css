@@ -23,3 +23,12 @@ footer{
 	padding: 1rem;
 	color: white;
 }
+
+.breadcrumb {
+  background-color: transparent !important;
+  background: none !important;
+  padding: 2 !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
