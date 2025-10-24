@@ -5,12 +5,20 @@ import { Table } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 
-export const TicketTable = () => {
+export const TicketTable = ({ tickets = null }) => {
   const { searchTicketList, isLoading, error } = useSelector(
     (state) => state.tickets
   );
-  if (isLoading) return <h3>Loading ...</h3>;
-  if (error) return <h3>{error}</h3>;
+  
+  // Use passed tickets prop or fallback to searchTicketList
+  const displayTickets = tickets || searchTicketList;
+  
+  if (error) return (
+    <div className="alert alert-danger text-center">
+      <i className="fas fa-exclamation-triangle me-2"></i>
+      {error}
+    </div>
+  );
 
   return (
     <Table striped bordered hover>
@@ -23,8 +31,8 @@ export const TicketTable = () => {
         </tr>
       </thead>
       <tbody>
-        {searchTicketList.length ? (
-          searchTicketList.map((row) => (
+        {displayTickets && displayTickets.length ? (
+          displayTickets.map((row) => (
             <tr key={row._id}>
               <td>{row._id}</td>
               <td>
@@ -36,8 +44,10 @@ export const TicketTable = () => {
           ))
         ) : (
           <tr>
-            <td colSpan="4" className="text-center">
-              No ticket show{" "}
+            <td colSpan="4" className="text-center py-4">
+              <div className="text-dark">
+                No tickets
+              </div>
             </td>
           </tr>
         )}

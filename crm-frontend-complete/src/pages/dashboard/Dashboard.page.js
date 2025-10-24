@@ -19,7 +19,10 @@ export const Dashboard = () => {
   }, [tickets, dispatch]);
 
   const pendingTickets = tickets.filter((row) => row.status !== "Closed");
-  const totlatTickets = tickets.length;
+  const closedTickets = tickets.filter((row) => row.status === "Closed");
+  const totalTickets = tickets.length;
+  const highPriorityTickets = tickets.filter((row) => row.priority === "High").length;
+
   return (
     <Container>
       <Row>
@@ -27,32 +30,62 @@ export const Dashboard = () => {
           <PageBreadcrumb page="Dashboard" />
         </Col>
       </Row>
-      <Row>
-        <Col className="text-center mt-5 mb-2">
+      
+      {/* Modern Stats Cards */}
+      <Row className="mb-4">
+        <Col md={3} className="mb-3">
+          <div className="stats-card">
+            <div className="stats-number">{totalTickets}</div>
+            <div className="stats-label">Total Tickets</div>
+          </div>
+        </Col>
+        <Col md={3} className="mb-3">
+          <div className="stats-card">
+            <div className="stats-number">{pendingTickets.length}</div>
+            <div className="stats-label">Pending</div>
+          </div>
+        </Col>
+        <Col md={3} className="mb-3">
+          <div className="stats-card">
+            <div className="stats-number">{closedTickets.length}</div>
+            <div className="stats-label">Resolved</div>
+          </div>
+        </Col>
+        <Col md={3} className="mb-3">
+          <div className="stats-card">
+            <div className="stats-number">{highPriorityTickets}</div>
+            <div className="stats-label">High Priority</div>
+          </div>
+        </Col>
+      </Row>
+
+      {/* Quick Actions */}
+      <Row className="mb-4">
+        <Col className="text-center">
           <Link to="/add-ticket">
-            <Button
-              variant="info"
-              style={{ fontSize: "2rem", padding: "10px 30px" }}
-            >
-              Add New Ticket
+            <Button className="btn-modern" size="lg">
+              <i className="fas fa-plus me-2"></i>
+              Create New Ticket
             </Button>
           </Link>
         </Col>
       </Row>
-      <Row>
-        <Col className="text-center  mb-2">
-          <div>Total tickets: {totlatTickets}</div>
-          <div>Pending tickets: {pendingTickets.length}</div>
-        </Col>
-      </Row>
-      <Row>
-        <Col className="mt-2">Recently Added tickets</Col>
-      </Row>
-      <hr />
 
+      {/* Recent Tickets */}
       <Row>
-        <Col className="recent-ticket">
-          <TicketTable tickets={tickets} />
+        <Col>
+          <div className="modern-card">
+            <h4 className="mb-3">
+              <i className="fas fa-ticket-alt me-2"></i>
+              Recent Tickets
+            </h4>
+            <TicketTable tickets={tickets.slice(0, 5)} />
+            <div className="text-center mt-3">
+              <Link to="/tickets">
+                <Button variant="outline-primary">View All Tickets</Button>
+              </Link>
+            </div>
+          </div>
         </Col>
       </Row>
     </Container>

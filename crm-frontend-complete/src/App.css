@@ -1,24 +1,165 @@
+/* Modern CRM Dashboard Styling */
 .default-layout {
-  display: gird;
+  display: grid;
   grid-template-rows: 80px auto 3rem;
   grid-template-areas:
     "header"
     "main"
     "footer";
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 header {
   grid-area: header;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 main {
   grid-area: main;
   min-height: 88vh;
+  padding: 2rem 0;
 }
 
 footer {
   grid-area: footer;
-  background: black;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
   padding: 1rem;
   color: white;
+  text-align: center;
+}
+
+/* Modern Card Styling */
+.modern-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 2rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.modern-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Dashboard Stats Cards */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+}
+
+.stats-number {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.stats-label {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Modern Button Styling */
+.btn-modern {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  color: white;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-modern:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+/* Ticket Status Badges */
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-open {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+}
+
+.status-pending {
+  background: linear-gradient(135deg, #feca57, #ff9ff3);
+  color: white;
+}
+
+.status-closed {
+  background: linear-gradient(135deg, #48dbfb, #0abde3);
+  color: white;
+}
+
+/* Empty State Styling */
+.empty-state {
+  color: #6c757d;
+  font-style: italic;
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state i {
+  opacity: 0.5;
+  margin-bottom: 1rem;
+}
+
+.empty-state .fs-5 {
+  font-size: 1.1rem !important;
+  font-weight: 500;
+}
+
+.empty-state small {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .default-layout {
+    grid-template-rows: 70px auto 3rem;
+  }
+  
+  main {
+    padding: 1rem 0;
+  }
+  
+  .modern-card {
+    padding: 1rem;
+    margin: 0.5rem 0;
+  }
 }
