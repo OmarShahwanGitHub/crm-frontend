@@ -25,8 +25,14 @@ export const LoginForm = ({ formSwitcher }) => {
 	let { from } = location.state || { from: { pathname: "/" } };
 
 	useEffect(() => {
-		sessionStorage.getItem("accessJWT") && history.replace(from);
-	}, [history, isAuth]);
+		// Check if already logged in on component mount
+		if (sessionStorage.getItem("accessJWT") && !isAuth) {
+			dispatch(loginSuccess());
+			dispatch(getUserProfile());
+			history.replace("/dashboard");
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -50,25 +56,51 @@ export const LoginForm = ({ formSwitcher }) => {
 
 	const handleOnSubmit = async e => {
 		e.preventDefault();
+		e.stopPropagation();
 
 		if (!email || !password) {
-			return alert("Fill up all the form!");
+			alert("Fill up all the form!");
+			return;
+		}
+
+		// Prevent double submission
+		if (isLoading) {
+			return;
 		}
 
 		dispatch(loginPending());
 
 		try {
-			const isAuth = await userLogin({ email, password });
-
-			if (isAuth.status === "error") {
-				return dispatch(loginFail(isAuth.message));
+			const response = await userLogin({ email, password });
+			
+			// Check if response has error status
+			if (response && response.status === "error") {
+				dispatch(loginFail(response.message || "Login failed"));
+				return;
 			}
 
-			dispatch(loginSuccess());
-			dispatch(getUserProfile());
-			history.push("/dashboard");
+			// Check if tokens were set (indicates success)
+			const accessToken = sessionStorage.getItem("accessJWT");
+			if (accessToken || (response && response.status === "success")) {
+				// Update auth state immediately
+				dispatch(loginSuccess());
+				
+				// Fetch user profile in background (don't wait)
+				dispatch(getUserProfile());
+				
+				// Use requestAnimationFrame to ensure state is updated before redirect
+				requestAnimationFrame(() => {
+					history.replace("/dashboard");
+				});
+			} else {
+				dispatch(loginFail("Login failed. Please check your credentials."));
+			}
 		} catch (error) {
-			dispatch(loginFail(error.message));
+			console.error("Login error:", error);
+			const errorMessage = error.response?.data?.message || 
+			                     error.message || 
+			                     "Login failed. Please try again.";
+			dispatch(loginFail(errorMessage));
 		}
 	};
 
@@ -103,8 +135,23 @@ export const LoginForm = ({ formSwitcher }) => {
 							/>
 						</Form.Group>
 
-						<Button type="submit">Login</Button>
-						{isLoading && <Spinner variant="primary" animation="border" />}
+						<Button type="submit" disabled={isLoading}>
+							{isLoading ? (
+								<>
+									<Spinner
+										as="span"
+										animation="border"
+										size="sm"
+										role="status"
+										aria-hidden="true"
+										className="me-2"
+									/>
+									Logging in...
+								</>
+							) : (
+								"Login"
+							)}
+						</Button>
 					</Form>
 					<hr />
 				</Col>

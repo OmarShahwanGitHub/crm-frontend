@@ -42,14 +42,15 @@ export const userLogin = (frmData) => {
     try {
       const res = await axios.post(loginUrl, frmData);
 
-      resolve(res.data);
-
       if (res.data.status === "success") {
         sessionStorage.setItem("accessJWT", res.data.accessJWT);
         localStorage.setItem(
           "crmSite",
           JSON.stringify({ refreshJWT: res.data.refreshJWT })
         );
+        resolve(res.data);
+      } else {
+        resolve(res.data);
       }
     } catch (error) {
       reject(error);

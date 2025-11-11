@@ -31,18 +31,28 @@ export const PrivateRoute = ({ children, ...rest }) => {
 	return (
 		<Route
 			{...rest}
-			render={({ location }) =>
-				isAuth ? (
-					<DefaultLayout>{children}</DefaultLayout>
-				) : (
-					<Redirect
-						to={{
-							pathname: "/",
-							state: { from: location },
-						}}
-					/>
-				)
-			}
+			render={({ location }) => {
+				// Check both isAuth state and token in sessionStorage
+				const hasToken = sessionStorage.getItem("accessJWT");
+				const isAuthenticated = isAuth || hasToken;
+				
+				if (isAuthenticated) {
+					// If we have token but isAuth is false, update it
+					if (hasToken && !isAuth) {
+						dispatch(loginSuccess());
+					}
+					return <DefaultLayout>{children}</DefaultLayout>;
+				} else {
+					return (
+						<Redirect
+							to={{
+								pathname: "/",
+								state: { from: location },
+							}}
+						/>
+					);
+				}
+			}}
 		/>
 	);
 };
